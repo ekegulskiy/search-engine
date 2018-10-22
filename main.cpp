@@ -94,15 +94,36 @@ void printBooleanResults(string query, vector<unsigned long>& docIDs){
 int main(int argc, char *argv[])
 {
     SearchEngine searchEngine;
-    searchEngine.buildFromFile("collections/documents.txt");
-   
-    if(argc == 2){
-        string arg1 = argv[1];
-        if(arg1 == "-index")
-            searchEngine.printIndex(false);
+    bool bIndexOnly = false;
+    bool isSquad = false;
+    string collectionPath = "collections/documents.txt";
+    string squadCollectionPath;
+
+    int argIndex = 1;
+    while(argIndex < argc){
+        string nextArg = argv[argIndex++];
+        if(nextArg == "-index"){
+            bIndexOnly = true;
+        }
+        else if(nextArg == "-squad"){
+            isSquad = true;
+            squadCollectionPath = argv[argIndex++];
+        }
         else
-            searchEngine.rankedSearch(argv[1]);
-        return (0);
+        {  
+            cout << "Invalid option" << endl;
+            exit(-1);
+        }
+    }
+
+    if(isSquad)
+        searchEngine.buildFromSquadData(squadCollectionPath, true);
+    else
+        searchEngine.buildFromFile(collectionPath);
+
+    if(bIndexOnly){
+        searchEngine.printIndex(false);
+        return 0;
     }
 
     displayIntro();
