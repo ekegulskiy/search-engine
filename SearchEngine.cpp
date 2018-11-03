@@ -47,6 +47,13 @@ vector<string> Tokenizer::tokenize(string& text){
 
     if(token != "" && !isStopWord(token)){
         stemTerm(token);
+#if 0
+        if( token == "unives")
+        {
+            int x =0;
+            x =9;
+        }
+#endif
         tokens.push_back(token); // add last token
     }
     return tokens;
@@ -261,6 +268,8 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
     string space = SPACE_STR;
     ofstream tokenizedDocsFile;
     bool processingQuestion = false, processingAnswer =false;
+    unsigned long posUnused = 0;
+    unsigned long fakeDocID = 0;
 
     if(tokenizeCollection)
     {
@@ -288,8 +297,8 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
 
         while (singleLineText >> token) {
 
-#if 1
-            pos = token.find("Sugarloaf");
+#if 0
+            pos = token.find("unives");
             if(pos != std::string::npos)
             {
                 int x = 0;
@@ -365,7 +374,12 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
                     else if(processingQuestion){
                         tokens = Tokenizer::singleton().tokenize(token);
                         for(int i = 0; i < tokens.size(); i++)
+                        {
                             tokenizedDocsFile << tokens[i] << " ";
+                            posUnused = 0;
+                            fakeDocID = 0;
+                            m_index.addTerm(tokens[i], fakeDocID, posUnused);
+                        }
                     }
                     else if(token.find(JSON_TAG_ANSWER_START) != std::string::npos){
                         processingAnswer = true;
@@ -377,8 +391,12 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
 
                         tokens = Tokenizer::singleton().tokenize(token);
                         for(int i = 0; i < tokens.size(); i++)
+                        {
+                            posUnused = 0;
+                            fakeDocID = 0;
+                            m_index.addTerm(tokens[i], fakeDocID, posUnused);    
                             tokenizedDocsFile << tokens[i] << " ";  
-
+                        }
                         tokenizedDocsFile << JSON_TAG_ANSWER_STOP << " ";
                     }
                     else if( processingAnswer && token.length() >= 3 &&
@@ -387,14 +405,23 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
 
                         tokens = Tokenizer::singleton().tokenize(token);
                         for(int i = 0; i < tokens.size(); i++)
+                        {
+                            posUnused = 0;
+                            fakeDocID = 0;
+                            m_index.addTerm(tokens[i], fakeDocID, posUnused);     
                             tokenizedDocsFile << tokens[i] << " ";  
-
+                        }
                         tokenizedDocsFile << JSON_TAG_ANSWER_STOP2 << " ";
                     }                    
                     else if(processingAnswer){
                         tokens = Tokenizer::singleton().tokenize(token);
                         for(int i = 0; i < tokens.size(); i++)
+                        {
+                            posUnused = 0;
+                            fakeDocID = 0;
+                            m_index.addTerm(tokens[i], fakeDocID, posUnused);  
                             tokenizedDocsFile << tokens[i] << " ";
+                        }
                     }    
                     else
                         tokenizedDocsFile << token << " ";

@@ -233,7 +233,6 @@ public:
  *   @return pointer to TermInfo
  */  
     const TermInfo* getTermInfo(string term);
-protected:
 
 /** 
  *   @brief  adds term into index if not already there. If already there, just adds a document ID to the posting list. 
@@ -244,6 +243,8 @@ protected:
  *   @return void
  */
     void addTerm(string& term,unsigned long& docID, unsigned long& pos);
+
+protected:
 
     TERMS_LIST m_terms;      // map of all terms in the index
 };
