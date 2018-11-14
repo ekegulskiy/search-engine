@@ -339,6 +339,8 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
                     for(int i = 0; i < tokens.size(); i++)
                         tokenizedDocsFile << tokens[i] << " ";  
 
+                    if(token.find(".") != std::string::npos)
+                        tokenizedDocsFile << ".";
                     tokenizedDocsFile << JSON_TAG_DOC_CLOSE << " ";
                 }
             }
@@ -354,6 +356,9 @@ void SearchEngine::buildFromSquadData(string jsonFilePath, bool tokenizeCollecti
                     tokens = Tokenizer::singleton().tokenize(token);
                     for(int i = 0; i < tokens.size(); i++)
                         tokenizedDocsFile << tokens[i] << " ";
+
+                    if(token.find(".") != std::string::npos)
+                        tokenizedDocsFile << ".";
                 }
             }
             else{
