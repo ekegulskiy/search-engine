@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     bool bIndexOnly = false;
     bool isSquad = false;
     string collectionPath = "collections/documents.txt";
-    string squadCollectionPath;
+    string squadTrainDataPath, squadDevDataPath;
 
     int argIndex = 1;
     while(argIndex < argc){
@@ -105,9 +105,13 @@ int main(int argc, char *argv[])
         if(nextArg == "-index"){
             bIndexOnly = true;
         }
-        else if(nextArg == "-squad"){
+        else if(nextArg == "-squad-train-data"){
             isSquad = true;
-            squadCollectionPath = argv[argIndex++];
+            squadTrainDataPath = argv[argIndex++];
+        }
+        else if(nextArg == "-squad-dev-data"){
+            isSquad = true;
+            squadDevDataPath = argv[argIndex++];
         }
         else
         {  
@@ -117,7 +121,10 @@ int main(int argc, char *argv[])
     }
 
     if(isSquad)
-        searchEngine.buildFromSquadData(squadCollectionPath, true);
+    {
+        searchEngine.buildFromSquadData(squadTrainDataPath, true);
+        searchEngine.buildFromSquadData(squadDevDataPath, true);
+    }
     else
         searchEngine.buildFromFile(collectionPath);
 

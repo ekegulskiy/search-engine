@@ -16,4 +16,4 @@ TO RUN:
   The program can be run in different modes:
   1. ./search-engine          // interactive mode (allows user to execute from a set of predefined queries or custom query)
   2. ./search-engine -index  // will print the positional index to the screen
-  3. ./search-engine -squad [file path]  // will use Squad data (see https://rajpurkar.github.io/SQuAD-explorer/) specified by [file path] for building the index
+  3. ./search-engine -squad-train-data [train file] -squad-dev-data [dev file] // will use Squad data files (see https://rajpurkar.github.io/SQuAD-explorer/) for building the index
